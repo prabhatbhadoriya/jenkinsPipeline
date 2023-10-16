@@ -16,8 +16,10 @@ pipeline {
       steps {
         sh 'echo "This is Build Stage"'
       }
+    }
 
-      steps {
+stage('Approval') {
+            steps {
                 script {
                     def approval = input(
                         id: 'userInput',
@@ -32,7 +34,7 @@ pipeline {
                     }
                 }
             }
-    }
+        }
 
 
 
