@@ -17,7 +17,7 @@ pipeline {
         sh 'echo "This is Build Stage"'
          script {
                     def recipient = 'prabhat.bhadoriya@inspiritvision.com'
-                    def buildUrl = "${BUILD_URL}input/"
+                    def buildUrl = "${BUILD_URL}input/ProceedToNextJob/"
 
                     emailext(
                         to: recipient,
@@ -44,6 +44,14 @@ pipeline {
 
     stage('Deploy') {
       steps {
+        input(id: 'ProceedToNextJob', message: 'Waiting for approval to proceed to the next job...', parameters: [string(defaultValue: '', description: 'Enter your Jenkins username', name: 'Approver')])
+
+            script {
+                def approver = params.Approver
+                if (approver != 'prabhat') {
+                    error('Unauthorized! Only prabhat is allowed to approve.')
+                }
+            }
         sh 'echo "This is Deployment Stage"'
       }
     }
