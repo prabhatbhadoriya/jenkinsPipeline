@@ -15,13 +15,7 @@ pipeline {
     stage('build') {
       steps {
         sh 'echo "This is Build Stage"'
-      }
-    }
-
-    stage('Approval') {
-            steps {
-                script {
-                    def recipient = 'prabhat.bhadoriya@inspiritvision.com'
+        def recipient = 'prabhat.bhadoriya@inspiritvision.com'
                     def buildUrl = "${BUILD_URL}input/"
 
                     emailext(
@@ -41,12 +35,12 @@ pipeline {
                         message: 'Do you want to continue?',
                         parameters: [choice(choices: 'Approve', description: 'Click "Approve" to continue', name: 'Approval')]
                     )
-                    
-                }
-            }
-        }
 
 
+      }
+    }
+
+    
 
     stage('Deploy') {
       steps {
