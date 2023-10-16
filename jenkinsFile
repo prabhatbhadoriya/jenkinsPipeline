@@ -45,12 +45,13 @@ pipeline {
     stage('Deploy') {
       steps {
         //input(id: 'ProceedToNextJob', message: 'Waiting for approval to proceed to the next job...', parameters: [string(defaultValue: '', description: 'Enter your Jenkins username', name: 'Approver')])
-        def getCurrentUserName() {
-        def userIdCause = currentBuild.rawBuild.getCause(hudson.model.UserIdCause)
-        return userIdCause != null ? userIdCause.getUserName() : "Unknown"
-        }
+        
             
         script {    
+                    def getCurrentUserName() {
+                    def userIdCause = currentBuild.rawBuild.getCause(hudson.model.UserIdCause)
+                    return userIdCause != null ? userIdCause.getUserName() : "Unknown"
+                    }
                     def userName = getCurrentUserName()
                     echo "Current user: ${userName}"
                                    
