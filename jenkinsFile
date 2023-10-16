@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('test') {
       steps {
-        sh 'echo "hello this is first blue ocean pipeline"'
+        sh 'echo "hello this is first code pipeline"'
       }
     }
 
@@ -21,26 +21,8 @@ pipeline {
      stage('Approval') {
             steps {
                 script {
-                    def approval = input(
-                        id: 'userInput',
-                        message: 'Do you want to continue?',
-                        parameters: [choice(choices: 'Approve', description: 'Click "Approve" to continue', name: 'Approval')]
-                    )
-
-                    if (approval == 'Approve') {
-                        echo 'Proceeding with the next job...'
-                    } else {
-                        error 'Build aborted by user'
-                    }
-                }
-            }
-        }
-
-                stage('Approval2') {
-            steps {
-                script {
                     def recipient = 'prabhat.bhadoriya@inspiritvision.com'
-                    def approvalToken = UUID.randomUUID().toString()
+                    def buildUrl = "${JENKINS_URL}/job/${JOB_NAME}/build?token=TOKEN_FOR_BUILD"
 
                     emailext(
                         to: recipient,
@@ -48,18 +30,15 @@ pipeline {
                         body: """
                             <p>Dear User,</p>
                             <p>Please click on the following link to approve the Jenkins build:</p>
-                            <p><a href='${JENKINS_URL}/job/${JOB_NAME}/input/userInput/approve?token=${approvalToken}'>Click here to approve</a></p>
+                            <p><a href='${buildUrl}'>Click here to approve</a></p>
                         """,
                         mimeType: 'text/html'
                     )
-
-                    // Store the approval token for later verification
-                    script {
-                        env.APPROVAL_TOKEN = approvalToken
-                    }
                 }
             }
         }
+
+     
 
    
 
