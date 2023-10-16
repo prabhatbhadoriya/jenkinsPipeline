@@ -52,7 +52,7 @@ pipeline {
 
                     echo "Current authenticated username: ${authenticatedUser}"
                 
-                if (authenticatedUser != 'developer') {
+                if (authenticatedUser != 'jenkins') {
                     error('Unauthorized! Only developer is allowed to approve.')
                 }
             }
