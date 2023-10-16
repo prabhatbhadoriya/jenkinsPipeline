@@ -18,19 +18,11 @@ pipeline {
       }
     }
 
-stage('Approval') {
+    stage('Approval') {
             steps {
                 script {
                     def recipient = 'prabhat.bhadoriya@inspiritvision.com'
                     def buildUrl = "${BUILD_URL}input/ProceedToNextJob/"
-
-                    def emailApproval = input(
-                        id: 'emailInput',
-                        message: 'Do you want to continue?',
-                        parameters: [choice(choices: 'Approve', description: 'Click "Approve" to continue', name: 'Approval')]
-                    )
-
-                    
 
                     emailext(
                         to: recipient,
@@ -43,15 +35,13 @@ stage('Approval') {
                         mimeType: 'text/html'
                     )
 
-                    if (emailApproval == 'Approve') {
-                        emailext (
-                            subject: 'Pipeline Approved',
-                            body: 'Your pipeline has been approved and will proceed with the deployment stage.',
-                            to: 'your-email@example.com'
-                        )
-                    } else {
-                        error 'Build aborted by user'
-                    }
+
+                    def emailApproval = input(
+                        id: 'emailInput',
+                        message: 'Do you want to continue?',
+                        parameters: [choice(choices: 'Approve', description: 'Click "Approve" to continue', name: 'Approval')]
+                    )
+                    
                 }
             }
         }
