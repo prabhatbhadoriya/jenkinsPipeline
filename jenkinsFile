@@ -47,8 +47,12 @@ pipeline {
         input(id: 'ProceedToNextJob', message: 'Waiting for approval to proceed to the next job...', parameters: [string(defaultValue: '', description: 'Enter your Jenkins username', name: 'Approver')])
 
             script {
-                def approver = params.Approver
-                if (approver != 'developer') {
+                // Get the current authenticated username
+                    def authenticatedUser = Jenkins.instance.getAuthentication().getName()
+
+                    echo "Current authenticated username: ${authenticatedUser}"
+                
+                if (authenticatedUser != 'developer') {
                     error('Unauthorized! Only developer is allowed to approve.')
                 }
             }
